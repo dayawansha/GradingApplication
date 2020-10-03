@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-class ResultRepositoryTest {
+class TeacherRepositoryTest {
 
     @Autowired
      private TeacherRepository teacherRepository;
 
 
     @Autowired
-    private TestEntityManager entityManager;
+    private TestEntityManager testEntityManager;
 
 
     @Test
@@ -43,13 +43,13 @@ class ResultRepositoryTest {
     public void should_find_all_teacher(){
 
         Teacher tut1 = new Teacher(11, "Desc1", 220);
-        entityManager.merge(tut1);
+        testEntityManager.merge(tut1);
 
         Teacher tut2 = new Teacher(21, "Desc2", 210);
-        entityManager.merge(tut2);
+        testEntityManager.merge(tut2);
 
         Teacher tut3 =  new Teacher(31, "Desc3", 200);
-        entityManager.merge(tut3);
+        testEntityManager.merge(tut3);
 
         Iterable<Teacher> tutorials = teacherRepository.findAll();
         assertThat(tutorials).hasSize(3);
@@ -58,7 +58,7 @@ class ResultRepositoryTest {
     @Test
     public void should_find_Teacher_by_id() {
 
-        Teacher tut2 = entityManager.merge(new Teacher(20, "Desc2", 210));
+        Teacher tut2 = testEntityManager.merge(new Teacher(20, "Desc2", 210));
         Teacher foundTutorial = teacherRepository.findById(tut2.getTeacherId()).get();
         assertThat(foundTutorial).isEqualTo(tut2);
     }
@@ -66,13 +66,13 @@ class ResultRepositoryTest {
     @Test
     public void should_delete_Teacher_by_id() {
         Teacher tut1 = new Teacher(100, "Desc1", 220);
-        entityManager.merge(tut1);
+        testEntityManager.merge(tut1);
 
         Teacher tut2 = new Teacher(200, "Desc2", 210);
-        Teacher tut = entityManager.merge(tut2);
+        Teacher tut = testEntityManager.merge(tut2);
 
         Teacher tut3 =  new Teacher(300, "Desc3", 200);
-        entityManager.merge(tut3);
+        testEntityManager.merge(tut3);
 
         teacherRepository.deleteById(tut.getTeacherId());
         Iterable<Teacher> tutorials = teacherRepository.findAll();
@@ -81,8 +81,8 @@ class ResultRepositoryTest {
 
     @Test
     public void should_delete_all_tutorials() {
-        entityManager.merge(new Teacher(1000, "Desc1", 220));
-        entityManager.merge(new Teacher(2000, "Desc2", 230));
+        testEntityManager.merge(new Teacher(1000, "Desc1", 220));
+        testEntityManager.merge(new Teacher(2000, "Desc2", 230));
 
         teacherRepository.deleteAll();
         assertThat(teacherRepository.findAll()).isEmpty();
@@ -92,7 +92,7 @@ class ResultRepositoryTest {
     public void should_update_Teacher_by_id() {
 
 
-        Teacher tut2 = entityManager.merge(new Teacher(20000, "Desc2", 210));
+        Teacher tut2 = testEntityManager.merge(new Teacher(20000, "Desc2", 210));
         Teacher comperingObj = new Teacher(30000, "Desc3", 30);
         Teacher tutSaved = teacherRepository.findById(tut2.getTeacherId()).get();
 
